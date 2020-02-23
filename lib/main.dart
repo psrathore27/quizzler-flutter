@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'quizbrain.dart';
 
+//finished app
+
 QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(Quizzler());

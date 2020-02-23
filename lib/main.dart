@@ -31,7 +31,20 @@ class _QuizPageState extends State<QuizPage> {
 
   List<Icon> scorekeeper = [];
 
-  int qno=0;
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctans =  quizBrain.getQuestionAnswer();
+    setState(() {
+    if(userPickedAnswer == correctans)
+    {
+      scorekeeper.add(Icon(Icons.check, color: Colors.green,));
+    }
+    else
+    {
+      scorekeeper.add(Icon(Icons.close, color: Colors.red,));
+    }
+    quizBrain.nextQuestion();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +58,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionBank[qno].questionText,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -70,21 +83,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-
-                bool correctans =  quizBrain.questionBank[qno].questionAnswer;
-
-                if(correctans == true)
-                  {
-                    print('user got it right');
-                  }
-                else
-                  {
-                    print('user got it wrong');
-                  }
-
-                setState(() {
-                  qno++;
-                });
+                checkAnswer(true);
               },
             ),
           ),
@@ -104,35 +103,13 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked false.
 
-                bool correctans = quizBrain.questionBank[qno].questionAnswer;
-
-                if(correctans == false)
-                {
-                  print('user got it right');
-                }
-                else
-                {
-                  print('user got it wrong');
-                }
-
-                setState(() {
-                  qno++;
-                });
+                checkAnswer(false);
               },
             ),
           ),
         ),
         Row(
-          children: <Widget>[
-            Icon(
-              Icons.check,
-              color: Colors.green,
-            ),
-            Icon(
-              Icons.close,
-              color: Colors.red,
-            ),
-          ],
+          children: scorekeeper,
         )
       ],
     );
